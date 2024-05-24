@@ -14,8 +14,8 @@ class LoginCubit extends Cubit<LoginStates> {
   Future<void> login(LoginInput loginInput) async {
     try {
       emit(state.copyWith(loginState: RequestStatus.loading));
-      await _loginUseCase.call(loginInput);
-      emit(state.copyWith(loginState: RequestStatus.success));
+      final loginResponse= await _loginUseCase.call(loginInput);
+      emit(state.copyWith(loginState: RequestStatus.success,loginResponse: loginResponse));
     } catch (e) {
       emit(state.copyWith(loginState: RequestStatus.error, errorMessage: e.toString()));
     }

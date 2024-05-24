@@ -1,4 +1,5 @@
 import 'package:chd_task_ahmed_ayman/features/authentication/domain/models/inputs/login_input.dart';
+import 'package:chd_task_ahmed_ayman/features/authentication/domain/models/login_model.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/domain/repository/authentication_repository.dart';
 
 class LoginUseCase
@@ -7,7 +8,7 @@ class LoginUseCase
 
   LoginUseCase(this._authenticationRepository);
 
-  Future<void> call(LoginInput loginInput)
+  Future<LoginModel> call(LoginInput loginInput)
   {
     return _authenticationRepository.login(loginInput);
   }

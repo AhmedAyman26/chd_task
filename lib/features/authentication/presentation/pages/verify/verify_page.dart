@@ -1,10 +1,11 @@
-import 'package:chd_task_ahmed_ayman/app_injector.dart';
+import 'package:chd_task_ahmed_ayman/core/utils/app_injector.dart';
+import 'package:chd_task_ahmed_ayman/core/utils/cache_helper.dart';
 import 'package:chd_task_ahmed_ayman/core/utils/request_status.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/domain/models/inputs/verify_input.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/presentation/pages/verify/verify_cubit.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/presentation/pages/verify/verify_states.dart';
 import 'package:chd_task_ahmed_ayman/features/home/presentation/pages/main_navigator_page.dart';
-import 'package:chd_task_ahmed_ayman/otp_pin_code_widget.dart';
+import 'package:chd_task_ahmed_ayman/features/authentication/presentation/widgets/otp_pin_code_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -61,6 +62,7 @@ class _VerifyPageBodyState extends State<VerifyPageBody> {
     return BlocListener<VerifyCubit, VerifyStates> (
       listener: (context, state) {
         if (state.verifyStatus == RequestStatus.success) {
+          CacheHelper.saveData(key: 'token', value: state.verifyModel?.token);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(state.verifyModel?.message ?? ''),
             backgroundColor: Colors.green,

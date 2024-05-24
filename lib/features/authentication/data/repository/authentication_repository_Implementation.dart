@@ -1,4 +1,6 @@
 import 'package:chd_task_ahmed_ayman/core/utils/dio_helper.dart';
+import 'package:chd_task_ahmed_ayman/features/authentication/api_login_response.dart';
+import 'package:chd_task_ahmed_ayman/features/authentication/data/mappers/api_login_mapper.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/data/mappers/api_verify_response_mapper.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/data/models/api_register_model.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/data/mappers/api_register_mapper.dart';
@@ -9,6 +11,7 @@ import 'package:chd_task_ahmed_ayman/features/authentication/data/models/inputs/
 import 'package:chd_task_ahmed_ayman/features/authentication/domain/models/inputs/login_input.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/domain/models/inputs/register_input.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/domain/models/inputs/verify_input.dart';
+import 'package:chd_task_ahmed_ayman/features/authentication/domain/models/login_model.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/domain/models/register_model.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/domain/models/verify_model.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/domain/repository/authentication_repository.dart';
@@ -32,14 +35,15 @@ class AuthenticationRepositoryImplementation extends AuthenticationRepository {
   }
 
   @override
-  Future<void> login(LoginInput loginInput) async {
+  Future<LoginModel> login(LoginInput loginInput) async {
     final response = await DioHelper.postData(
       url: 'auth/login',
+      headers: {"X-DID":{loginInput.identity}},
       data: ApiLoginInput.fromInput(loginInput).toJson(),
     );
 
     if ( response.statusCode == 201) {
-      return;
+      return ApiLoginResponse.fromJson(response.data).mapToLoginModel();
     } else {
       throw Exception(response.data['message']);
     }
@@ -50,7 +54,7 @@ class AuthenticationRepositoryImplementation extends AuthenticationRepository {
     final response = await DioHelper.postData(
       url: 'auth/verify',
       data: ApiVerifyInput.fromInput(verifyInput).toJson(),
-      headers: {"XDID":{verifyInput.identity}},
+      headers: {"X-DID":{verifyInput.identity}},
     );
     if (response.statusCode == 201) {
       return ApiVerifyResponse.fromJson(response.data).mapToVerify();
