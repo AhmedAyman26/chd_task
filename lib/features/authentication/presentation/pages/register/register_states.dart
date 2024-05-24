@@ -1,5 +1,5 @@
 import 'package:chd_task_ahmed_ayman/core/utils/request_status.dart';
-import 'package:chd_task_ahmed_ayman/features/authentication/domain/models/regiser_model.dart';
+import 'package:chd_task_ahmed_ayman/features/authentication/domain/models/register_model.dart';
 
 class RegisterStates
 {

@@ -29,6 +29,8 @@ class _LoginPageBodyState extends State<LoginPageBody> {
   Uuid uniqueIdentifier = const Uuid();
 
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _identityNumberController =
+      TextEditingController();
   String dialCode = '+966';
 
   @override
@@ -62,6 +64,11 @@ class _LoginPageBodyState extends State<LoginPageBody> {
                 },
                 controller: _phoneController,
               ),
+              TextFormField(
+                controller: _identityNumberController,
+                decoration:
+                    const InputDecoration(label: Text('Identity Number')),
+              ),
               Center(
                 child: SizedBox(
                   width: double.infinity,
@@ -70,10 +77,10 @@ class _LoginPageBodyState extends State<LoginPageBody> {
                           backgroundColor:
                               MaterialStatePropertyAll(Colors.blue)),
                       onPressed: () {
-                        context.read<LoginCubit>().login(LoginModel(
-                            phone: int.parse(_phoneController.text),
+                        context.read<LoginCubit>().login(LoginInput(
+                            phone: _phoneController.text,
                             dialCode: dialCode,
-                            identity: uniqueIdentifier.v4()));
+                            identity: _identityNumberController.text));
                       },
                       child: const Text(
                         'Login',
@@ -95,9 +102,12 @@ class _LoginPageBodyState extends State<LoginPageBody> {
               const Spacer(),
               Center(
                   child: GestureDetector(
-                      onTap: ()
-                      {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage(),));
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterPage(),
+                            ));
                       },
                       child: const Text(
                         "Don't have an account? Register",

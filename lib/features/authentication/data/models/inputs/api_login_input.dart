@@ -1,15 +1,15 @@
 import 'package:chd_task_ahmed_ayman/features/authentication/domain/models/inputs/login_input.dart';
 
 class ApiLoginInput {
-  final int phone;
+  final String phone;
   final String dial_code;
   final String identity;
 
   ApiLoginInput(this.phone, this.dial_code, this.identity);
 
-  factory ApiLoginInput.fromInput(LoginModel loginModel) {
+  factory ApiLoginInput.fromInput(LoginInput loginInput) {
     return ApiLoginInput(
-        loginModel.phone, loginModel.dialCode, loginModel.identity);
+        loginInput.phone, loginInput.dialCode, loginInput.identity);
   }
 
   Map<String, dynamic> toJson() {

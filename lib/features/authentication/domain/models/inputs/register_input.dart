@@ -1,6 +1,6 @@
 import 'package:chd_task_ahmed_ayman/features/authentication/domain/models/inputs/login_input.dart';
 
-class RegisterInput extends LoginModel {
+class RegisterInput extends LoginInput {
   final String firstName;
   final String lastName;
   final String type;

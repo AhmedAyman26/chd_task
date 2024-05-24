@@ -1,7 +1,7 @@
-class LoginModel {
-  final int phone;
+class LoginInput {
+  final String phone;
   final String dialCode;
   final String identity;
 
-  LoginModel({required this.phone,required this.dialCode,required this.identity});
+  LoginInput({required this.phone,required this.dialCode,required this.identity});
 }

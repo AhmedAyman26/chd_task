@@ -3,6 +3,7 @@ import 'package:chd_task_ahmed_ayman/core/utils/request_status.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/domain/models/inputs/register_input.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/presentation/pages/register/register_cubit.dart';
 import 'package:chd_task_ahmed_ayman/features/authentication/presentation/pages/register/register_states.dart';
+import 'package:chd_task_ahmed_ayman/features/authentication/presentation/pages/verify/verify_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -56,6 +57,14 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
                   content: Text(state.registerModel.message!),
                   backgroundColor: Colors.green,
                 ));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => VerifyPage(
+                              phoneNumber: phoneNumberController.text,
+                              identity: identityNumberController.text,
+                              otp: state.registerModel.otp??0,
+                            )));
               }
               if (state.registerState == RequestStatus.error) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -65,54 +74,48 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
               }
             },
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Register',
-                  style: TextStyle(fontSize: 30),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Register',
+                          style: TextStyle(fontSize: 30),
+                        ),
+                        const SizedBox(height: 40),
+                        const Text('FirstName'),
+                        TextFormField(
+                          controller: firstNameController,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        ),
+                        const Text('LastName'),
+                        TextFormField(
+                            controller: lastNameController,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10)))),
+                        Text('phoneNumber'),
+                        IntlPhoneField(
+                          onChanged: (value) {
+                            dialCode = value.countryCode;
+                          },
+                          controller: phoneNumberController,
+                        ),
+                        const Text('identityNumber'),
+                        TextFormField(
+                            controller: identityNumberController,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10)))),
+                        // const Spacer(),
+                      ],
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 40),
-                const Text('FirstName'),
-                TextFormField(
-                  controller: firstNameController,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                ),
-                const Text('LastName'),
-                TextFormField(
-                    controller: lastNameController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)))),
-                const Text('type'),
-                DropdownButtonFormField(
-                  value: types[0],
-                  items: types
-                      .map((e) => DropdownMenuItem(value: e,child: Text(e),))
-                      .toList(),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  onChanged: (value) {
-                    // type = value;
-                    setState(() {});
-                  },
-                ),
-                const Text('phoneNumber'),
-                IntlPhoneField(
-                  onChanged: (value) {
-                    dialCode = value.countryCode;
-                  },
-                  controller: phoneNumberController,
-                ),
-                const Text('identityNumber'),
-                TextFormField(
-                    controller: identityNumberController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)))),
-                const Spacer(),
                 Center(
                   child: SizedBox(
                     width: double.infinity,
@@ -123,13 +126,12 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
                         onPressed: () {
                           context.read<RegisterCubit>().register(
                                 RegisterInput(
-                                    phone:
-                                        int.parse(phoneNumberController.text),
+                                    phone: phoneNumberController.text,
                                     dialCode: '20',
                                     identity: identityNumberController.text,
                                     firstName: firstNameController.text,
                                     lastName: lastNameController.text,
-                                    type: type),
+                                    type: 'individual'),
                               );
                         },
                         child: const Text(
@@ -146,5 +148,3 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
     );
   }
 }
-
-List types = ['INDIVIDUAL', 'BUSINESS'];

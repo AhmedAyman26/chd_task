@@ -7,8 +7,8 @@ class LoginUseCase
 
   LoginUseCase(this._authenticationRepository);
 
-  Future<void> call(LoginModel loginModel)
+  Future<void> call(LoginInput loginInput)
   {
-    return _authenticationRepository.login(loginModel);
+    return _authenticationRepository.login(loginInput);
   }
 }
